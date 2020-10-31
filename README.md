@@ -1,0 +1,3 @@
+# QTasksManager
+to be continued...
+

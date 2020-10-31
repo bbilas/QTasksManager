@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>qtquickcontrols2.conf</file>
+        <file>WorkPackages.qml</file>
+        <file>WorkPackagesForm.ui.qml</file>
+    </qresource>
+</RCC>
