@@ -41,6 +41,8 @@ class WorkPackage : public QObject {
     bool timerState() const;
     void setTimerState(const bool timerState);
 
+    const WorkPackageDescription* config();
+
  private:
     WorkPackageDescription mConfig;
 

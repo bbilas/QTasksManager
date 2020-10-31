@@ -50,6 +50,10 @@ void WorkPackage::setTimerState(const bool timerState) {
     emit timerStateChanged();
 }
 
+const WorkPackageDescription* WorkPackage::config() {
+    return &mConfig;
+}
+
 QDataStream &operator<<(QDataStream &out, const WorkPackageDescription &v) {
     out << v.projectName << v.taskName << v.activityTime << v.timerState;
     return out;
