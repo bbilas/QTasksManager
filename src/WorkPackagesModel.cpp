@@ -5,12 +5,12 @@
 
 WorkPackagesModel::WorkPackagesModel(QObject *parent)
     : QAbstractListModel(parent) {
+    loadData();
+
     mTimer.reset(new QTimer);
     mTimer->setInterval(1000);
     mTimer->start();
     connect(mTimer.data(), SIGNAL(timeout()), this, SLOT(onTimerTimeouted()));
-
-    addNewEmptyTask();
 }
 
 WorkPackagesModel::~WorkPackagesModel() {
@@ -78,6 +78,7 @@ bool WorkPackagesModel::setData(const QModelIndex &index, const QVariant &value,
             break;
         }
 
+        saveData();
         emit dataChanged(index, index, QVector<int>() << role);
 
         return true;
@@ -131,4 +132,51 @@ bool WorkPackagesModel::reloadActivityTime(int idx) {
     setData(index(idx, 0), 0, ActivityTime);
 
     return true;
+}
+
+void WorkPackagesModel::loadData() {
+    WorkPackagesDescription workPackages = mUserSettings.value("workPackages").value<WorkPackagesDescription>();
+
+    if (workPackages.isEmpty()) {
+        addNewEmptyTask();
+        return;
+    }
+
+    for (WorkPackageDescription item : workPackages) {
+        WorkPackage *workPackage = new WorkPackage(item);
+        mWorkPackages.append(workPackage);
+    }
+}
+
+void WorkPackagesModel::saveData() {
+    WorkPackagesDescription workPackages;
+
+    for (WorkPackage *workPackage : mWorkPackages) {
+        workPackages.append(*workPackage->config());
+    }
+
+    mUserSettings.setValue("workPackages", QVariant::fromValue(workPackages));
+}
+
+QDataStream& operator<<(QDataStream& out, const WorkPackagesDescription& workPackagesDescription) {
+    out << workPackagesDescription.size();
+
+    for (WorkPackageDescription workPackageDescription : workPackagesDescription) {
+        out << workPackageDescription;
+    }
+    return out;
+}
+
+QDataStream& operator>>(QDataStream& in, WorkPackagesDescription& v) {
+    int size;
+    in >> size;
+
+    for (int i=0; i < size; i++) {
+        WorkPackageDescription workPackageDescription;
+        in >> workPackageDescription;
+
+        v.append(workPackageDescription);
+    }
+
+    return in;
 }
