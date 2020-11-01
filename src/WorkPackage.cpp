@@ -11,6 +11,11 @@ WorkPackage::WorkPackage(const WorkPackage &other) : QObject(NULL) {
     memcpy(&mConfig, &other.mConfig, sizeof(mConfig));
 }
 
+WorkPackage::WorkPackage(const WorkPackageDescription &config, QObject *parent) : QObject(parent) {
+    QQmlEngine::setObjectOwnership(this, QQmlEngine::CppOwnership);
+    mConfig = config;
+}
+
 WorkPackage::~WorkPackage() {
 }
 
@@ -48,6 +53,10 @@ bool WorkPackage::timerState() const {
 void WorkPackage::setTimerState(const bool timerState) {
     mConfig.timerState = timerState;
     emit timerStateChanged();
+}
+
+const WorkPackageDescription* WorkPackage::config() {
+    return &mConfig;
 }
 
 QDataStream &operator<<(QDataStream &out, const WorkPackageDescription &v) {

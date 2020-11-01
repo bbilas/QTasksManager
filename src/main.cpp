@@ -10,6 +10,7 @@ int main(int argc, char *argv[]) {
 
     QGuiApplication app(argc, argv);
     QQmlApplicationEngine engine;
+    qRegisterMetaTypeStreamOperators<WorkPackagesDescription>("WorkPackagesDescription");
     WorkPackagesModel workPackagesModel;
 
     engine.rootContext()->setContextProperty("taskModel", &workPackagesModel);
