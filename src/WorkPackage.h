@@ -26,6 +26,7 @@ class WorkPackage : public QObject {
  public:
     explicit WorkPackage(QObject *parent = nullptr);
     explicit WorkPackage(const WorkPackage &other);
+    explicit WorkPackage(const WorkPackageDescription &config, QObject *parent = nullptr);
 
     ~WorkPackage();
 

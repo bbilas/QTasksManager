@@ -11,6 +11,11 @@ WorkPackage::WorkPackage(const WorkPackage &other) : QObject(NULL) {
     memcpy(&mConfig, &other.mConfig, sizeof(mConfig));
 }
 
+WorkPackage::WorkPackage(const WorkPackageDescription &config, QObject *parent) : QObject(parent) {
+    QQmlEngine::setObjectOwnership(this, QQmlEngine::CppOwnership);
+    mConfig = config;
+}
+
 WorkPackage::~WorkPackage() {
 }
 
