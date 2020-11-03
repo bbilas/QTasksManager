@@ -144,6 +144,8 @@ void WorkPackagesModel::loadData() {
 
     for (WorkPackageDescription item : workPackages) {
         WorkPackage *workPackage = new WorkPackage(item);
+        if (mUserSettings.restoreTaskSwitchStateAtStartUp() == false)
+            workPackage->setTimerState(false);
         mWorkPackages.append(workPackage);
     }
 }
