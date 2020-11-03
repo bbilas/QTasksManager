@@ -15,6 +15,8 @@ typedef QList<WorkPackageDescription> WorkPackagesDescription;
 class WorkPackagesModel : public QAbstractListModel {
     Q_OBJECT
 
+    Q_PROPERTY(QString totalActivityTime READ totalActivityTime NOTIFY totalActivityTimeChanged)
+
  public:
     explicit WorkPackagesModel(QObject *parent = nullptr);
     ~WorkPackagesModel();
@@ -36,12 +38,18 @@ class WorkPackagesModel : public QAbstractListModel {
     Q_INVOKABLE bool addNewEmptyTask(void);
     Q_INVOKABLE bool removeWorkPackage(int idx);
 
+    QString totalActivityTime() const;
+
+ signals:
+    void totalActivityTimeChanged();
+
  public slots:
     void onTimerTimeouted();
 
  private:
     void loadData();
     void saveData();
+    int calculateAndReturnTotalActivityTime() const;
 
     WorkPackagesList mWorkPackages;
     QScopedPointer<QTimer> mTimer;
