@@ -4,6 +4,7 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include "WorkPackagesModel.h"
+#include "UserSettings.h"
 
 int main(int argc, char *argv[]) {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -12,8 +13,10 @@ int main(int argc, char *argv[]) {
     QQmlApplicationEngine engine;
     qRegisterMetaTypeStreamOperators<WorkPackagesDescription>("WorkPackagesDescription");
     WorkPackagesModel workPackagesModel;
+    UserSettings userSettings;
 
     engine.rootContext()->setContextProperty("taskModel", &workPackagesModel);
+    engine.rootContext()->setContextProperty("userSettings", &userSettings);
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                      &app, [url](QObject *obj, const QUrl &objUrl) {

@@ -20,6 +20,7 @@ add_executable(QTasksManager
     src/icons.qrc
     src/WorkPackage.cpp
     src/WorkPackagesModel.cpp
+    src/UserSettings.cpp
     )
 
 target_compile_definitions(QTasksManager

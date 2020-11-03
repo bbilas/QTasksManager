@@ -7,6 +7,7 @@
 #include <QTimer>
 #include <QSettings>
 #include "WorkPackage.h"
+#include "UserSettings.h"
 
 typedef QList<WorkPackage*> WorkPackagesList;
 typedef QList<WorkPackageDescription> WorkPackagesDescription;
@@ -44,7 +45,8 @@ class WorkPackagesModel : public QAbstractListModel {
 
     WorkPackagesList mWorkPackages;
     QScopedPointer<QTimer> mTimer;
-    QSettings mUserSettings;
+    UserSettings mUserSettings;
+
 };
 
 QDataStream& operator<<(QDataStream& out, const WorkPackagesDescription& v);
