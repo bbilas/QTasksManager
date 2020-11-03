@@ -72,6 +72,7 @@ bool WorkPackagesModel::setData(const QModelIndex &index, const QVariant &value,
             break;
         case ActivityTime:
             workPackage->setActivityTime(QVariant(value).toInt());
+            emit totalActivityTimeChanged();
             break;
         case TimerState:
             workPackage->setTimerState(QVariant(value).toBool());
@@ -113,6 +114,18 @@ bool WorkPackagesModel::removeWorkPackage(int idx) {
     endRemoveRows();
 
     return true;
+}
+
+int WorkPackagesModel::calculateAndReturnTotalActivityTime() const {
+    int totalActivityTime = 0;
+    for (const auto &item : mWorkPackages)
+        totalActivityTime += item->activityTime();
+
+    return totalActivityTime;
+}
+
+QString WorkPackagesModel::totalActivityTime() const {
+    return QDateTime::fromSecsSinceEpoch(calculateAndReturnTotalActivityTime()).toUTC().toString("hh:mm:ss");
 }
 
 bool WorkPackagesModel::addNewEmptyTask(void) {
