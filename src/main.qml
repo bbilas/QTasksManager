@@ -44,6 +44,15 @@ ApplicationWindow {
                     drawer.close()
                 }
             }
+
+            ItemDelegate {
+                text: qsTr("Settings")
+                width: parent.width
+                onClicked: {
+                    stackView.push("qrc:/Settings.qml")
+                    drawer.close()
+                }
+            }
         }
     }
 
