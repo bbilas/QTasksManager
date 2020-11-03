@@ -4,7 +4,6 @@ import QtQuick.Controls 1.4 as QQC1
 import QtQuick.Layouts 1.11
 
 Item {
-    anchors.fill: parent
     property alias tasksTable: tasksTable
     property alias projectNameColumn: projectNameColumn
     property alias taskNameColumn: taskNameColumn
