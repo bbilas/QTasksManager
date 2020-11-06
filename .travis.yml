@@ -1,0 +1,23 @@
+language: cpp
+sudo: required
+dist: focal
+compiler: gcc
+os: linux
+notifications:
+  email: false
+env:
+  global:
+    - QT_VERSION=5.14.2
+    - PATH="/opt/Qt/${QT_VERSION}/gcc_64/bin:${PATH}"
+
+before_install:
+ - sudo apt update && sudo apt install -y curl p7zip-full libgl1-mesa-dev libglu1-mesa-dev
+ - wget https://code.qt.io/cgit/qbs/qbs.git/plain/scripts/install-qt.sh
+ - chmod +x install-qt.sh
+ - ./install-qt.sh --version ${QT_VERSION} qtbase qtdeclarative qtquickcontrols2 icu-linux
+
+before_script:
+  - mkdir build
+  - cd build && cmake . ..
+
+script: make
