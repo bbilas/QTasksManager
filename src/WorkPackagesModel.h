@@ -4,7 +4,6 @@
 #define WORKPACKAGESMODEL_H_
 
 #include <QAbstractListModel>
-#include <QTimer>
 #include <QSettings>
 #include "WorkPackage.h"
 #include "UserSettings.h"
@@ -39,20 +38,16 @@ class WorkPackagesModel : public QAbstractListModel {
     Q_INVOKABLE bool removeWorkPackage(int idx);
 
     QString totalActivityTime() const;
+    const WorkPackagesList *getWorkPackagesList();
 
  signals:
     void totalActivityTimeChanged();
 
- public slots:
-    void onTimerTimeouted();
-
  private:
     void loadData();
     void saveData();
-    int calculateAndReturnTotalActivityTime() const;
 
     WorkPackagesList mWorkPackages;
-    QScopedPointer<QTimer> mTimer;
     UserSettings mUserSettings;
 
 };

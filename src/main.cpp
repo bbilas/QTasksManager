@@ -5,6 +5,7 @@
 #include <QQmlContext>
 #include "WorkPackagesModel.h"
 #include "UserSettings.h"
+#include "WorkPackagesManager.h"
 
 int main(int argc, char *argv[]) {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -14,6 +15,7 @@ int main(int argc, char *argv[]) {
     qRegisterMetaTypeStreamOperators<WorkPackagesDescription>("WorkPackagesDescription");
     WorkPackagesModel workPackagesModel;
     UserSettings userSettings;
+    WorkPackagesManager workPackagesManager(&workPackagesModel);
 
     engine.rootContext()->setContextProperty("taskModel", &workPackagesModel);
     engine.rootContext()->setContextProperty("userSettings", &userSettings);
