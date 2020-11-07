@@ -6,26 +6,11 @@
 WorkPackagesModel::WorkPackagesModel(QObject *parent)
     : QAbstractListModel(parent) {
     loadData();
-
-    mTimer.reset(new QTimer);
-    mTimer->setInterval(1000);
-    mTimer->start();
-    connect(mTimer.data(), SIGNAL(timeout()), this, SLOT(onTimerTimeouted()));
 }
 
 WorkPackagesModel::~WorkPackagesModel() {
     for (WorkPackage *workPackage : mWorkPackages) {
         workPackage->deleteLater();
-    }
-}
-
-void WorkPackagesModel::onTimerTimeouted() {
-    for (int i = 0; i < mWorkPackages.size(); i++) {
-        WorkPackage *workPackage = mWorkPackages.at(i);
-        if (workPackage->timerState()) {
-            int seconds = workPackage->activityTime() + mTimer->interval() / 1000;
-            setData(index(i, 0), seconds, ActivityTime);
-        }
     }
 }
 
@@ -116,16 +101,16 @@ bool WorkPackagesModel::removeWorkPackage(int idx) {
     return true;
 }
 
-int WorkPackagesModel::calculateAndReturnTotalActivityTime() const {
+QString WorkPackagesModel::totalActivityTime() const {
     int totalActivityTime = 0;
     for (const auto &item : mWorkPackages)
         totalActivityTime += item->activityTime();
 
-    return totalActivityTime;
+    return QDateTime::fromSecsSinceEpoch(totalActivityTime).toUTC().toString("hh:mm:ss");
 }
 
-QString WorkPackagesModel::totalActivityTime() const {
-    return QDateTime::fromSecsSinceEpoch(calculateAndReturnTotalActivityTime()).toUTC().toString("hh:mm:ss");
+const WorkPackagesList *WorkPackagesModel::getWorkPackagesList() {
+    return &mWorkPackages;
 }
 
 bool WorkPackagesModel::addNewEmptyTask(void) {

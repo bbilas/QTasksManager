@@ -28,6 +28,7 @@ add_executable(QTasksManager
     src/WorkPackage.cpp
     src/WorkPackagesModel.cpp
     src/UserSettings.cpp
+    src/WorkPackagesManager.cpp
     )
 
 target_compile_definitions(QTasksManager
