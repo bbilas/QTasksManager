@@ -5,7 +5,9 @@
 #include <QDateTime>
 
 WorkPackagesManager::WorkPackagesManager(WorkPackagesModel *model) : QObject(),
-    mWorkPackagesModel(model) {
+    mWorkPackagesModel(model),
+    mOverHoursMessagePupUpShowed(false) {
+    mDailyWorkingTime.setHMS(8, 0, 0); // TODO: add possibility to change these values via the settings screen // default 08:00:00h
     mActivityTimeTimer.reset(new QTimer);
     mActivityTimeTimer->setInterval(1000);
     mActivityTimeTimer->start();
@@ -21,4 +23,20 @@ void WorkPackagesManager::onUpdateActivityTime() {
             mWorkPackagesModel->setData(mWorkPackagesModel->index(i, 0), activityTime, WorkPackagesModel::ActivityTime);
         }
     }
+
+    QTime totalActivityTime = QDateTime::fromString(mWorkPackagesModel->totalActivityTime(), "hh:mm:ss").time();
+    if (isDailyWorkingTimeExceeded(totalActivityTime))
+        showOverHoursMessagePopUp(totalActivityTime.toString("hh:mm:ss"));
+}
+
+bool WorkPackagesManager::isDailyWorkingTimeExceeded(const QTime &totalActivityTime) {
+    return totalActivityTime > mDailyWorkingTime;
+}
+
+void WorkPackagesManager::showOverHoursMessagePopUp(const QString &totalActivityTime) {
+    if (mOverHoursMessagePupUpShowed)   // prevent to show it multiple times
+        return;
+
+    emit overHoursDetected(totalActivityTime);
+    mOverHoursMessagePupUpShowed = true;
 }

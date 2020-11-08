@@ -15,6 +15,9 @@ class TrayIcon : public QSystemTrayIcon {
  public:
     TrayIcon(QQuickWindow *window);
 
+ public slots:
+   void onShowOverHoursMessage(const QString &activityTime);
+
  private:
    QSharedPointer<QAction> mMinimizeWindowAction;
    QSharedPointer<QAction> mRestoreWindowAction;
