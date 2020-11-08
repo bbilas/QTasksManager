@@ -25,11 +25,13 @@ add_executable(QTasksManager
     src/main.cpp
     src/qml.qrc
     src/icons.qrc
+    src/components.qrc
     src/WorkPackage.cpp
     src/WorkPackagesModel.cpp
     src/UserSettings.cpp
     src/WorkPackagesManager.cpp
     src/TrayIcon.cpp
+    src/DateTimeValidator.cpp
     )
 
 target_compile_definitions(QTasksManager

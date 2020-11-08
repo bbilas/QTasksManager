@@ -40,3 +40,10 @@ void WorkPackagesManager::showOverHoursMessagePopUp(const QString &totalActivity
     emit overHoursDetected(totalActivityTime);
     mOverHoursMessagePupUpShowed = true;
 }
+
+void WorkPackagesManager::onSetDailyWorkingTime(int hour, int minute, int seconds) {
+    if (mDailyWorkingTime.setHMS(hour, minute, seconds) == false)
+        return;
+
+    mOverHoursMessagePupUpShowed = false;
+}

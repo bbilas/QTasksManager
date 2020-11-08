@@ -8,6 +8,7 @@
 #include <QTimer>
 #include <QTime>
 #include "WorkPackagesModel.h"
+#include "UserSettings.h"
 
 class WorkPackagesManager : public QObject {
     Q_OBJECT
@@ -20,12 +21,14 @@ class WorkPackagesManager : public QObject {
 
  public slots:
    void onUpdateActivityTime();
+   void onSetDailyWorkingTime(int hour, int minute, int seconds);
 
  private:
    bool isDailyWorkingTimeExceeded(const QTime &totalActivityTime);
    void showOverHoursMessagePopUp(const QString &totalActivityTime);
 
    QScopedPointer<QTimer> mActivityTimeTimer;
+   UserSettings mUserSettings;
    WorkPackagesModel *mWorkPackagesModel;
    QTime mDailyWorkingTime;
    bool mOverHoursMessagePupUpShowed;

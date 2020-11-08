@@ -2,34 +2,36 @@
 import QtQuick 2.4
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.11
+import DateTimeValidator 1.0
 
 Page {
+    property alias dailyWorkingTime: dailyWorkingTime
     width: 640
     height: 480
 
-    RowLayout {
-        id: settingsItemRow
-        width: parent.width
-        height: 50
-        Layout.alignment: Qt.AlignTop | Qt.AlignLeft | Qt.AlignRight
+    Column {
+        anchors.fill: parent
+        spacing: 0
 
-        Label {
-            Layout.alignment: Qt.AlignLeft
-            Layout.leftMargin: 5
-            text: qsTr("Restore the task switch state at startup")
-            font.pointSize: 15
+        TextSwitchItem {
+            width: parent.width
+            height: 50
+            itemLabel.text: qsTr("Restore the task switch state at startup")
+            itemSwitch.checked: itemSwitch.checked = userSettings.taskSwitchStateAtStartUp
+            itemSwitch.onCheckedChanged: userSettings.taskSwitchStateAtStartUp = itemSwitch.checked
         }
 
-        Switch {
-            Component.onCompleted: checked = userSettings.taskSwitchStateAtStartUp
-            onCheckedChanged: userSettings.taskSwitchStateAtStartUp = checked
+        TextTextEditItem {
+            id: dailyWorkingTime
+            width: parent.width
+            height: 50
+            itemLabel.text: qsTr("Daily working time")
+            itemTextField.inputMask: "00:00:00"
+            itemTextField.placeholderText: qsTr("08:00:00")
+            itemTextField.validator: DateTimeValidator {}
+            itemTextField.text: userSettings.dailyWorkingTime
+            itemTextField.onTextEdited: userSettings.dailyWorkingTime
+                                        = dailyWorkingTime.itemTextField.text
         }
-    }
-
-    Rectangle {
-        width: settingsItemRow.width
-        anchors.top: settingsItemRow.bottom
-        height: 2
-        color: "black"
     }
 }
