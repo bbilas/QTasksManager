@@ -30,6 +30,7 @@ add_executable(QTasksManager
     src/UserSettings.cpp
     src/WorkPackagesManager.cpp
     src/TrayIcon.cpp
+    src/DateTimeValidator.cpp
     )
 
 target_compile_definitions(QTasksManager

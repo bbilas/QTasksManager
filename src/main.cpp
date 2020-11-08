@@ -8,6 +8,7 @@
 #include "UserSettings.h"
 #include "WorkPackagesManager.h"
 #include "TrayIcon.h"
+#include "DateTimeValidator.h"
 
 int main(int argc, char *argv[]) {
 
@@ -23,6 +24,7 @@ int main(int argc, char *argv[]) {
 
     engine.rootContext()->setContextProperty("taskModel", &workPackagesModel);
     engine.rootContext()->setContextProperty("userSettings", &userSettings);
+    qmlRegisterType<DateTimeValidator>("DateTimeValidator", 1, 0, "DateTimeValidator");
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                      &app, [url](QObject *obj, const QUrl &objUrl) {
