@@ -19,6 +19,7 @@ int main(int argc, char *argv[]) {
     WorkPackagesModel workPackagesModel;
     UserSettings userSettings;
     WorkPackagesManager workPackagesManager(&workPackagesModel);
+    QObject::connect(&userSettings, &UserSettings::dailyWorkingTimeChanged, &workPackagesManager, &WorkPackagesManager::onSetDailyWorkingTime);
 
     engine.rootContext()->setContextProperty("taskModel", &workPackagesModel);
     engine.rootContext()->setContextProperty("userSettings", &userSettings);
