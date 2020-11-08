@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>TextSwitchItem.qml</file>
+        <file>TextSwitchItemForm.ui.qml</file>
+        <file>TextTextEditItem.qml</file>
+        <file>TextTextEditItemForm.ui.qml</file>
+    </qresource>
+</RCC>

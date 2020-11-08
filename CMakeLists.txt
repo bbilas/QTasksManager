@@ -25,6 +25,7 @@ add_executable(QTasksManager
     src/main.cpp
     src/qml.qrc
     src/icons.qrc
+    src/components.qrc
     src/WorkPackage.cpp
     src/WorkPackagesModel.cpp
     src/UserSettings.cpp
