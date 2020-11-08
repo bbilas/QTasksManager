@@ -97,6 +97,7 @@ bool WorkPackagesModel::removeWorkPackage(int idx) {
     beginRemoveRows(QModelIndex(), idx, idx);
     mWorkPackages.removeAt(idx);
     endRemoveRows();
+    saveData();
 
     return true;
 }
