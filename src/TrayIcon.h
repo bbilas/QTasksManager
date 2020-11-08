@@ -18,11 +18,15 @@ class TrayIcon : public QSystemTrayIcon {
  public slots:
    void onShowOverHoursMessage(const QString &activityTime);
 
+ private slots:
+   void iconActivated(QSystemTrayIcon::ActivationReason reason);
+
  private:
    QSharedPointer<QAction> mMinimizeWindowAction;
    QSharedPointer<QAction> mRestoreWindowAction;
    QSharedPointer<QAction> mQuitWindowAction;
    QSharedPointer<QMenu> mTrayIconMenu;
+   QQuickWindow *mWindow;
 
 };
 
