@@ -6,6 +6,7 @@
 #include <QObject>
 #include <QScopedPointer>
 #include <QTimer>
+#include <QTime>
 #include "WorkPackagesModel.h"
 
 class WorkPackagesManager : public QObject {
@@ -14,12 +15,20 @@ class WorkPackagesManager : public QObject {
  public:
    explicit WorkPackagesManager(WorkPackagesModel *model);
 
+ signals:
+   void overHoursDetected(const QString &activityTime);
+
  public slots:
    void onUpdateActivityTime();
 
  private:
+   bool isDailyWorkingTimeExceeded(const QTime &totalActivityTime);
+   void showOverHoursMessagePopUp(const QString &totalActivityTime);
+
    QScopedPointer<QTimer> mActivityTimeTimer;
    WorkPackagesModel *mWorkPackagesModel;
+   QTime mDailyWorkingTime;
+   bool mOverHoursMessagePupUpShowed;
 
 };
 

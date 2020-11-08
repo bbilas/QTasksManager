@@ -31,6 +31,7 @@ int main(int argc, char *argv[]) {
     engine.load(url);
 
     TrayIcon trayIcon(qobject_cast<QQuickWindow *>(engine.rootObjects().value(0)));
+    QObject::connect(&workPackagesManager, &WorkPackagesManager::overHoursDetected, &trayIcon, &TrayIcon::onShowOverHoursMessage);
 
     return app.exec();
 }

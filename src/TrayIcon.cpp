@@ -1,6 +1,7 @@
 // Copyright 2020 Bartosz Bilas <bartosz.bilas@hotmail.com>
 
 #include <QCoreApplication>
+#include <QMessageBox>
 #include "TrayIcon.h"
 
 TrayIcon::TrayIcon(QQuickWindow *window) {
@@ -22,3 +23,11 @@ TrayIcon::TrayIcon(QQuickWindow *window) {
     show();
 }
 
+void TrayIcon::onShowOverHoursMessage(const QString &totalActivityTime) {
+    if (QSystemTrayIcon::supportsMessages() == false)
+        return;
+
+    const QString msg("Time worked: " + totalActivityTime);
+    QSystemTrayIcon::MessageIcon msgIcon = QSystemTrayIcon::MessageIcon(0);
+    showMessage("You have started overhours!", msg, msgIcon, 3000);
+}
