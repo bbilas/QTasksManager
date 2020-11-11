@@ -39,3 +39,11 @@ target_compile_definitions(QTasksManager
 target_link_libraries(QTasksManager
   PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Qml)
 
+set(EXTRA_DIR "${CMAKE_CURRENT_SOURCE_DIR}/extra")
+
+install(FILES ${EXTRA_DIR}/desktop/qtasksmanager.desktop
+        DESTINATION /usr/share/applications)
+install(FILES ${EXTRA_DIR}/desktop/qtasksmanager.svg
+        DESTINATION /usr/share/icons/hicolor/scalable/apps)
+install(TARGETS ${PROJECT_NAME}
+        RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
