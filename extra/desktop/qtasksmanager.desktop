@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=QTasksManager
+Comment=Graphical work packages manager written in Qt
+Exec=QTasksManager
+Icon=qtasksmanager
+StartupNotify=false
+Terminal=false
+Type=Application
+Categories=Utility
