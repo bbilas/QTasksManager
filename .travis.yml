@@ -17,7 +17,9 @@ before_install:
  - ./install-qt.sh --version ${QT_VERSION} qtbase qtdeclarative qtquickcontrols2 icu-linux
 
 before_script:
-  - mkdir build
-  - cd build && cmake . ..
+  - mkdir build && cd build
+  - cmake -DCMAKE_BUILD_TYPE:STRING="None" -DCMAKE_INSTALL_PREFIX:PATH="/usr" -Wno-dev . ..
 
-script: make
+script:
+  - make
+  - make DESTDIR=test_install_dir install

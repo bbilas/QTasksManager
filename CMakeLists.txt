@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.13)
+include(cmake/gitversion.cmake)
 
 project(QTasksManager LANGUAGES CXX)
 
@@ -33,6 +34,8 @@ add_executable(QTasksManager
     src/TrayIcon.cpp
     src/DateTimeValidator.cpp
     )
+
+target_compile_definitions(QTasksManager PRIVATE CONFIG_SW_VERSION=${APP_VERSION})
 
 target_compile_definitions(QTasksManager
   PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
