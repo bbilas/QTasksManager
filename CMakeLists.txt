@@ -32,6 +32,7 @@ add_executable(QTasksManager
     src/WorkPackagesManager.cpp
     src/TrayIcon.cpp
     src/DateTimeValidator.cpp
+    src/dbus/OrgCinnamonScreenSaver.cpp
     )
 
 target_compile_definitions(QTasksManager
