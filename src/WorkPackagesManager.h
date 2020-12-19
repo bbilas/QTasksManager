@@ -9,6 +9,7 @@
 #include <QTime>
 #include "WorkPackagesModel.h"
 #include "UserSettings.h"
+#include "ScreenSaver.h"
 
 class WorkPackagesManager : public QObject {
     Q_OBJECT
@@ -22,11 +23,13 @@ class WorkPackagesManager : public QObject {
  public slots:
    void onUpdateActivityTime();
    void onSetDailyWorkingTime(int hour, int minute, int seconds);
+   void onScreenSaverActiveChanged(bool active);
 
  private:
    bool isDailyWorkingTimeExceeded(const QTime &totalActivityTime);
    void showOverHoursMessagePopUp(const QString &totalActivityTime);
 
+   ScreenSaver mScreenSaver;
    QScopedPointer<QTimer> mActivityTimeTimer;
    UserSettings mUserSettings;
    WorkPackagesModel *mWorkPackagesModel;

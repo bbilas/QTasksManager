@@ -12,6 +12,7 @@ WorkPackagesManager::WorkPackagesManager(WorkPackagesModel *model) : QObject(),
     mActivityTimeTimer->setInterval(1000);
     mActivityTimeTimer->start();
     connect(mActivityTimeTimer.data(), SIGNAL(timeout()), this, SLOT(onUpdateActivityTime()));
+    connect(&mScreenSaver, &ScreenSaver::activeChanged, this, &WorkPackagesManager::onScreenSaverActiveChanged);
 }
 
 void WorkPackagesManager::onUpdateActivityTime() {
@@ -46,4 +47,18 @@ void WorkPackagesManager::onSetDailyWorkingTime(int hour, int minute, int second
         return;
 
     mOverHoursMessagePupUpShowed = false;
+}
+
+void WorkPackagesManager::onScreenSaverActiveChanged(bool active) {
+    static QList<bool> workPackagesStates;
+    const WorkPackagesList *workPackagesList = mWorkPackagesModel->getWorkPackagesList();
+
+    for (int i = 0; i < workPackagesList->size(); i++) {
+        if (active) {
+            workPackagesStates.insert(i, workPackagesList->at(i)->timerState());
+            mWorkPackagesModel->setData(mWorkPackagesModel->index(i, 0), false, WorkPackagesModel::TimerState);
+        } else {
+            mWorkPackagesModel->setData(mWorkPackagesModel->index(i, 0), workPackagesStates.at(i), WorkPackagesModel::TimerState);
+        }
+    }
 }
