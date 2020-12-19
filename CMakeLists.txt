@@ -11,8 +11,8 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Quick Widgets Qml REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick Widgets Qml REQUIRED)
+find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Quick Widgets Qml DBus REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick Widgets Qml DBus REQUIRED)
 
 set(QT5_MINIMUM_VERSION_MAJOR 5)
 set(QT5_MINIMUM_VERSION_MINOR 14)
@@ -32,12 +32,14 @@ add_executable(QTasksManager
     src/WorkPackagesManager.cpp
     src/TrayIcon.cpp
     src/DateTimeValidator.cpp
+    src/dbus/OrgCinnamonScreenSaver.cpp
+    src/ScreenSaver.cpp
     )
 
 target_compile_definitions(QTasksManager
   PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
 target_link_libraries(QTasksManager
-  PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Qml)
+  PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Qml Qt${QT_VERSION_MAJOR}::DBus)
 
 set(EXTRA_DIR "${CMAKE_CURRENT_SOURCE_DIR}/extra")
 
