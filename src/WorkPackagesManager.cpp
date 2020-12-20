@@ -7,7 +7,8 @@
 WorkPackagesManager::WorkPackagesManager(WorkPackagesModel *model) : QObject(),
     mWorkPackagesModel(model),
     mOverHoursMessagePupUpShowed(false) {
-    mDailyWorkingTime.setHMS(8, 0, 0); // TODO: add possibility to change these values via the settings screen // default 08:00:00h
+    QTime dailyWorkingTime = QTime::fromString(mUserSettings.dailyWorkingTime(), "hh:mm:ss");
+    onSetDailyWorkingTime(dailyWorkingTime.hour(), dailyWorkingTime.minute(), dailyWorkingTime.second());
     mActivityTimeTimer.reset(new QTimer);
     mActivityTimeTimer->setInterval(1000);
     mActivityTimeTimer->start();
