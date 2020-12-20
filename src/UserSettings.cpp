@@ -3,6 +3,8 @@
 #include <QDateTime>
 #include "UserSettings.h"
 
+#define DEFAULT_DAILY_WORKING_TIME  QStringLiteral("08:00:00")
+
 UserSettings::UserSettings(QObject* parent) : QSettings(parent) {
 }
 
@@ -16,7 +18,7 @@ void UserSettings::setTaskSwitchStateAtStartUp(const bool enabled) {
 }
 
 QString UserSettings::dailyWorkingTime() const {
-    return value("dailyWorkingTime", QStringLiteral("08:00:00")).toString();
+    return value("dailyWorkingTime", DEFAULT_DAILY_WORKING_TIME).toString();
 }
 
 void UserSettings::setDailyWorkingTime(const QString &dailyWorkingTime) {
