@@ -46,13 +46,13 @@ void WorkPackage::setActivityTime(const int activityTime) {
     emit activityTimeChanged();
 }
 
-bool WorkPackage::timerState() const {
-    return mConfig.timerState;
+bool WorkPackage::active() const {
+    return mConfig.active;
 }
 
-void WorkPackage::setTimerState(const bool timerState) {
-    mConfig.timerState = timerState;
-    emit timerStateChanged();
+void WorkPackage::setActive(const bool active) {
+    mConfig.active = active;
+    emit activeChanged();
 }
 
 const WorkPackageDescription* WorkPackage::config() {
@@ -60,11 +60,11 @@ const WorkPackageDescription* WorkPackage::config() {
 }
 
 QDataStream &operator<<(QDataStream &out, const WorkPackageDescription &v) {
-    out << v.projectName << v.taskName << v.activityTime << v.timerState;
+    out << v.projectName << v.taskName << v.activityTime << v.active;
     return out;
 }
 
 QDataStream &operator>>(QDataStream &in, WorkPackageDescription &v) {
-    in >> v.projectName >> v.taskName >> v.activityTime >> v.timerState;
+    in >> v.projectName >> v.taskName >> v.activityTime >> v.active;
     return in;
 }

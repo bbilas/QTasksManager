@@ -34,8 +34,8 @@ QVariant WorkPackagesModel::data(const QModelIndex &index, int role) const {
         return QVariant::fromValue(workPackage->taskName());
     case ActivityTime:
         return QVariant::fromValue(QDateTime::fromSecsSinceEpoch(workPackage->activityTime()).toUTC().toString("hh:mm:ss"));
-    case TimerState:
-        return QVariant::fromValue(workPackage->timerState());
+    case Active:
+        return QVariant::fromValue(workPackage->active());
     }
 
     return QVariant();
@@ -59,8 +59,8 @@ bool WorkPackagesModel::setData(const QModelIndex &index, const QVariant &value,
             workPackage->setActivityTime(QVariant(value).toInt());
             emit totalActivityTimeChanged();
             break;
-        case TimerState:
-            workPackage->setTimerState(QVariant(value).toBool());
+        case Active:
+            workPackage->setActive(QVariant(value).toBool());
             break;
         }
 
@@ -85,7 +85,7 @@ QHash<int, QByteArray> WorkPackagesModel::roleNames() const {
     names[ProjectName] = "projectName";
     names[TaskName] = "taskName";
     names[ActivityTime] = "activityTime";
-    names[TimerState] = "timerState";
+    names[Active] = "active";
 
     return names;
 }
@@ -144,7 +144,7 @@ void WorkPackagesModel::loadData() {
     for (WorkPackageDescription item : workPackages) {
         WorkPackage *workPackage = new WorkPackage(item);
         if (mUserSettings.restoreTaskSwitchStateAtStartUp() == false)
-            workPackage->setTimerState(false);
+            workPackage->setActive(false);
         mWorkPackages.append(workPackage);
     }
 }
