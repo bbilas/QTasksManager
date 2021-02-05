@@ -10,7 +10,7 @@ typedef struct {
     QString projectName = QStringLiteral("Project Name");
     QString taskName = QStringLiteral("Task Name");
     int activityTime = 0;
-    bool timerState = false;
+    bool active = false;
 } WorkPackageDescription;
 
 Q_DECLARE_METATYPE(WorkPackageDescription)
@@ -21,7 +21,7 @@ class WorkPackage : public QObject {
     Q_PROPERTY(QString projectName READ projectName WRITE setProjectName NOTIFY projectNameChanged)
     Q_PROPERTY(QString taskName READ taskName WRITE setTaskName NOTIFY taskNameChanged)
     Q_PROPERTY(int expiredTime READ activityTime WRITE setActivityTime NOTIFY activityTimeChanged)
-    Q_PROPERTY(bool timerState READ timerState WRITE setTimerState NOTIFY timerStateChanged)
+    Q_PROPERTY(bool active READ active WRITE setActive NOTIFY activeChanged)
 
  public:
     explicit WorkPackage(QObject *parent = nullptr);
@@ -39,8 +39,8 @@ class WorkPackage : public QObject {
     int activityTime() const;
     void setActivityTime(const int activityTime);
 
-    bool timerState() const;
-    void setTimerState(const bool timerState);
+    bool active() const;
+    void setActive(const bool active);
 
     const WorkPackageDescription* config();
 
@@ -51,7 +51,7 @@ class WorkPackage : public QObject {
     void projectNameChanged();
     void taskNameChanged();
     void activityTimeChanged();
-    void timerStateChanged();
+    void activeChanged();
 };
 
 Q_DECLARE_METATYPE(WorkPackage)

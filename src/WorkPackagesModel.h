@@ -24,7 +24,7 @@ class WorkPackagesModel : public QAbstractListModel {
         ProjectName = Qt::UserRole + 1,
         TaskName,
         ActivityTime,
-        TimerState,
+        Active,
     };
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;

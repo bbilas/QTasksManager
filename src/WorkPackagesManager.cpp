@@ -21,7 +21,7 @@ void WorkPackagesManager::onUpdateActivityTime() {
     for (int i = 0; i < workPackagesList->size(); i++) {
         WorkPackage *workPackage = workPackagesList->at(i);
         int activityTime = workPackage->activityTime() + mActivityTimeTimer->interval() / 1000;
-        if (workPackage->timerState()) {
+        if (workPackage->active()) {
             mWorkPackagesModel->setData(mWorkPackagesModel->index(i, 0), activityTime, WorkPackagesModel::ActivityTime);
         }
     }
@@ -56,10 +56,10 @@ void WorkPackagesManager::onScreenSaverActiveChanged(bool active) {
 
     for (int i = 0; i < workPackagesList->size(); i++) {
         if (active) {
-            workPackagesStates.insert(i, workPackagesList->at(i)->timerState());
-            mWorkPackagesModel->setData(mWorkPackagesModel->index(i, 0), false, WorkPackagesModel::TimerState);
+            workPackagesStates.insert(i, workPackagesList->at(i)->active());
+            mWorkPackagesModel->setData(mWorkPackagesModel->index(i, 0), false, WorkPackagesModel::Active);
         } else {
-            mWorkPackagesModel->setData(mWorkPackagesModel->index(i, 0), workPackagesStates.at(i), WorkPackagesModel::TimerState);
+            mWorkPackagesModel->setData(mWorkPackagesModel->index(i, 0), workPackagesStates.at(i), WorkPackagesModel::Active);
         }
     }
 }

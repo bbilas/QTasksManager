@@ -62,8 +62,8 @@ WorkPackagesForm {
         anchors.fill: parent
 
         Switch {
-            checked: model.timerState
-            onCheckedChanged: model.timerState = checked
+            checked: model.active
+            onCheckedChanged: model.active = checked
         }
 
         Image {
