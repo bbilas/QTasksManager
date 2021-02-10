@@ -6,5 +6,7 @@
         <file>WorkPackagesForm.ui.qml</file>
         <file>Settings.qml</file>
         <file>SettingsForm.ui.qml</file>
+        <file>ConfirmationPopup.qml</file>
+        <file>ConfirmationPopupForm.ui.qml</file>
     </qresource>
 </RCC>

@@ -6,6 +6,7 @@ import QtQuick.Controls 2.4
 WorkPackagesForm {
     readonly property int minColumWidth: 160
     readonly property int extraColumnMargin: 10
+    property int workPackageIndex: 0
 
     function updateCurrentRow(idx) {
         tasksTable.selection.clear()
@@ -58,6 +59,19 @@ WorkPackagesForm {
         }
     }
 
+    ConfirmationPopup {
+        id: confirmationPopup
+        x: 100
+        y: 100
+        width: 400
+        height: 100
+        buttonYes.onClicked: {
+            taskModel.removeWorkPackage(workPackageIndex)
+            confirmationPopup.close()
+        }
+        buttonNo.onClicked: confirmationPopup.close()
+    }
+
     actionsColumn.delegate: RowLayout {
         anchors.fill: parent
 
@@ -77,7 +91,8 @@ WorkPackagesForm {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    taskModel.removeWorkPackage(styleData.row)
+                    workPackageIndex = styleData.row
+                    confirmationPopup.open()
                 }
             }
         }
