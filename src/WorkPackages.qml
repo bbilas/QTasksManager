@@ -19,13 +19,19 @@ WorkPackagesForm {
 
         TextInput {
             id: input
-            text: model.projectName
+            // TODO(bbilas): find a better way to solve this problem
+            text: if (model)
+                      model.projectName
+                  else
+                      ""
             onFocusChanged: updateCurrentRow(styleData.row)
             onDisplayTextChanged: {
-                model.projectName = text
-                if (contentWidth.toFixed() > projectNameColumn.width)
-                    projectNameColumn.width = parseInt(
-                                contentWidth.toFixed()) + extraColumnMargin
+                if (model) {
+                    model.projectName = text
+                    if (contentWidth.toFixed() > projectNameColumn.width)
+                        projectNameColumn.width = parseInt(
+                                    contentWidth.toFixed()) + extraColumnMargin
+                }
             }
             Keys.onReleased: {
                 if (event.key === Qt.Key_Backspace) {
@@ -41,13 +47,18 @@ WorkPackagesForm {
         anchors.fill: parent
 
         TextInput {
-            text: model.taskName
+            text: if (model)
+                      model.taskName
+                  else
+                      ""
             onFocusChanged: updateCurrentRow(styleData.row)
             onDisplayTextChanged: {
-                model.taskName = text
-                if (contentWidth.toFixed() > taskNameColumn.width)
-                    taskNameColumn.width = parseInt(contentWidth.toFixed(
-                                                        )) + extraColumnMargin
+                if (model) {
+                    model.taskName = text
+                    if (contentWidth.toFixed() > taskNameColumn.width)
+                        taskNameColumn.width = parseInt(
+                                    contentWidth.toFixed()) + extraColumnMargin
+                }
             }
             Keys.onReleased: {
                 if (event.key === Qt.Key_Backspace) {
@@ -76,8 +87,12 @@ WorkPackagesForm {
         anchors.fill: parent
 
         Switch {
-            checked: model.active
-            onCheckedChanged: model.active = checked
+            checked: if (model)
+                         model.active
+                     else
+                         false
+            onCheckedChanged: if (model)
+                                  model.active = checked
         }
 
         Image {
@@ -113,8 +128,12 @@ WorkPackagesForm {
         }
 
         Label {
-            text: model.activityTime
-            onTextChanged: model.activityTimeHumanString = text
+            text: if (model)
+                      model.activityTime
+                  else
+                      ""
+            onTextChanged: if (model)
+                               model.activityTimeHumanString = text
         }
     }
 
