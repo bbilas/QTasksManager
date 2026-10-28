@@ -3,31 +3,32 @@
 #ifndef TRAYICON_H
 #define TRAYICON_H
 
-#include <QAction>
-#include <QObject>
 #include <QMenu>
-#include <QQuickView>
+#include <QPointer>
 #include <QSystemTrayIcon>
+
+class QAction;
+class QWindow;
+class TaskModel;
 
 class TrayIcon : public QSystemTrayIcon {
     Q_OBJECT
 
  public:
-    TrayIcon(QQuickWindow *window);
+    TrayIcon(QWindow *window, TaskModel *model, QObject *parent = nullptr);
 
  public slots:
-   void onShowOverHoursMessage(const QString &activityTime);
-
- private slots:
-   void iconActivated(QSystemTrayIcon::ActivationReason reason);
+    void showOvertimeMessage(const QString &totalTime);
 
  private:
-   QSharedPointer<QAction> mMinimizeWindowAction;
-   QSharedPointer<QAction> mRestoreWindowAction;
-   QSharedPointer<QAction> mQuitWindowAction;
-   QSharedPointer<QMenu> mTrayIconMenu;
-   QQuickWindow *mWindow;
+    void onActivated(QSystemTrayIcon::ActivationReason reason);
+    void toggleWindow();
+    void updateToolTip();
 
+    QPointer<QWindow> mWindow;
+    TaskModel *mModel;
+    QMenu mMenu;
+    QAction *mToggleAction;
 };
 
-#endif // TRAYICON_H
+#endif  // TRAYICON_H
