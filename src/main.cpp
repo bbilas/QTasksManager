@@ -1,40 +1,43 @@
 // Copyright 2020 Bartosz Bilas <bartosz.bilas@hotmail.com>
 
 #include <QApplication>
+#include <QIcon>
 #include <QQmlApplicationEngine>
-#include <QQmlContext>
+#include <QQuickStyle>
 #include <QQuickWindow>
-#include "WorkPackagesModel.h"
-#include "UserSettings.h"
-#include "WorkPackagesManager.h"
+#include <QSystemTrayIcon>
+#include "AppSettings.h"
+#include "ScreenLockMonitor.h"
+#include "TaskModel.h"
+#include "TimeTracker.h"
 #include "TrayIcon.h"
-#include "DateTimeValidator.h"
 
 int main(int argc, char *argv[]) {
-
-    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-    QApplication::setQuitOnLastWindowClosed(false);
     QApplication app(argc, argv);
+    // Keep the 1.x settings location ("Unknown Organization/QTasksManager.conf").
+    QApplication::setApplicationName(QStringLiteral("QTasksManager"));
+    QApplication::setApplicationVersion(QStringLiteral(QTASKSMANAGER_VERSION));
+    QApplication::setDesktopFileName(QStringLiteral("qtasksmanager"));
+    QApplication::setWindowIcon(QIcon(QStringLiteral(":/media/icons/tray_icon.png")));
+    // Without a tray there is no way back to a hidden window, so quit on close.
+    QApplication::setQuitOnLastWindowClosed(!QSystemTrayIcon::isSystemTrayAvailable());
+    QQuickStyle::setStyle(QStringLiteral("Basic"));
+
+    AppSettings settings(nullptr);
+    TaskModel tasks(settings.restoreRunningOnStartup());
+    ScreenLockMonitor screenLock;
+    TimeTracker tracker(&tasks, &settings, &screenLock);
+    QObject::connect(&app, &QCoreApplication::aboutToQuit, &tasks, &TaskModel::save);
+
     QQmlApplicationEngine engine;
-    qRegisterMetaTypeStreamOperators<WorkPackagesDescription>("WorkPackagesDescription");
-    WorkPackagesModel workPackagesModel;
-    UserSettings userSettings;
-    WorkPackagesManager workPackagesManager(&workPackagesModel);
-    QObject::connect(&userSettings, &UserSettings::dailyWorkingTimeChanged, &workPackagesManager, &WorkPackagesManager::onSetDailyWorkingTime);
+    QObject::connect(&engine, &QQmlApplicationEngine::objectCreationFailed, &app,
+                     [] { QCoreApplication::exit(EXIT_FAILURE); }, Qt::QueuedConnection);
+    engine.loadFromModule("TasksManager", "Main");
+    if (engine.rootObjects().isEmpty())
+        return EXIT_FAILURE;
 
-    engine.rootContext()->setContextProperty("taskModel", &workPackagesModel);
-    engine.rootContext()->setContextProperty("userSettings", &userSettings);
-    qmlRegisterType<DateTimeValidator>("DateTimeValidator", 1, 0, "DateTimeValidator");
-    const QUrl url(QStringLiteral("qrc:/main.qml"));
-    QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
-                     &app, [url](QObject *obj, const QUrl &objUrl) {
-        if (!obj && url == objUrl)
-            QCoreApplication::exit(-1);
-    }, Qt::QueuedConnection);
-    engine.load(url);
-
-    TrayIcon trayIcon(qobject_cast<QQuickWindow *>(engine.rootObjects().value(0)));
-    QObject::connect(&workPackagesManager, &WorkPackagesManager::overHoursDetected, &trayIcon, &TrayIcon::onShowOverHoursMessage);
+    TrayIcon trayIcon(qobject_cast<QQuickWindow *>(engine.rootObjects().constFirst()), &tasks);
+    QObject::connect(&tracker, &TimeTracker::overtimeStarted, &trayIcon, &TrayIcon::showOvertimeMessage);
 
     return app.exec();
 }

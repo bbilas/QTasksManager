@@ -1,7 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file>media/icons/garbage.png</file>
-        <file>media/icons/reload.png</file>
-        <file>media/icons/tray_icon.png</file>
-    </qresource>
-</RCC>
